@@ -530,6 +530,10 @@ let
       libclang = callPackage ./clang {
         patches =
           [
+            ./clang/clang_visibility_public.patch
+          ]
+          ++
+          [
             (metadata.getVersionFile "clang/purity.patch")
             # https://reviews.llvm.org/D51899
             (metadata.getVersionFile "clang/gnu-install-dirs.patch")

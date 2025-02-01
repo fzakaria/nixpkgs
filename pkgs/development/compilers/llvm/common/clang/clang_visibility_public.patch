@@ -1,0 +1,13 @@
+diff --git a/include/clang/Driver/Options.td b/include/clang/Driver/Options.td
+index 1af633e59d0b..7336243b7048 100644
+--- a/include/clang/Driver/Options.td
++++ b/include/clang/Driver/Options.td
+@@ -614,8 +614,8 @@ multiclass BoolOptionWithoutMarshalling<string prefix = "", string spelling_base
+ class MarshallingInfoVisibility<KeyPathAndMacro kpm, code default>
+   : MarshallingInfoEnum<kpm, default>,
+     Values<"default,hidden,internal,protected">,
+-    NormalizedValues<["DefaultVisibility", "HiddenVisibility",
+-                      "HiddenVisibility", "ProtectedVisibility"]> {}
++    NormalizedValues<["DefaultVisibility", "DefaultVisibility",
++                      "DefaultVisibility", "DefaultVisibility"]> {}
+ 
