@@ -196,6 +196,9 @@ let
       overlays = [
         (self': super': {
           pkgsLLVM = super';
+          cjson = super'.cjson.override {
+            stdenv = super'.gccStdenv;
+          };
         })
       ] ++ overlays;
       # Bootstrap a cross stdenv using the LLVM toolchain.
