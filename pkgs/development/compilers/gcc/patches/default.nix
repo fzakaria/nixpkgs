@@ -307,5 +307,6 @@ in
 ++ optional (
   (is7 || is8) && !atLeast9 && targetPlatform.libc == "musl"
 ) ./libgomp-dont-force-initial-exec.patch
-++
-[./visibility.patch]
+++ optional 
+  atLeast13
+ ./visibility.patch
