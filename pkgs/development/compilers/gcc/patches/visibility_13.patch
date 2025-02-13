@@ -1,0 +1,21 @@
+diff --git a/gcc/common.opt b/gcc/common.opt
+index b055c7bd9ac..e94531b03c6 100644
+--- a/gcc/common.opt
++++ b/gcc/common.opt
+@@ -3242,13 +3242,13 @@ EnumValue
+ Enum(symbol_visibility) String(default) Value(VISIBILITY_DEFAULT)
+ 
+ EnumValue
+-Enum(symbol_visibility) String(internal) Value(VISIBILITY_INTERNAL)
++Enum(symbol_visibility) String(internal) Value(VISIBILITY_DEFAULT)
+ 
+ EnumValue
+-Enum(symbol_visibility) String(hidden) Value(VISIBILITY_HIDDEN)
++Enum(symbol_visibility) String(hidden) Value(VISIBILITY_DEFAULT)
+ 
+ EnumValue
+-Enum(symbol_visibility) String(protected) Value(VISIBILITY_PROTECTED)
++Enum(symbol_visibility) String(protected) Value(VISIBILITY_DEFAULT)
+ 
+ fvtable-verify=
+ Common Joined RejectNegative Enum(vtv_priority) Var(flag_vtable_verify) Init(VTV_NO_PRIORITY)
