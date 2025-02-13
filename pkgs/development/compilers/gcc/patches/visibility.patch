@@ -1,0 +1,59 @@
+diff --git a/gcc/c-family/c-attribs.cc b/gcc/c-family/c-attribs.cc
+index f3181e7b57c..0aeeaef2907 100644
+--- a/gcc/c-family/c-attribs.cc
++++ b/gcc/c-family/c-attribs.cc
+@@ -3570,14 +3570,15 @@ handle_visibility_attribute (tree *node, tree name, tree args,
+ 	}
+     }
+ 
++  // HACK: Force all to VISIBILITY_DEFAULT
+   if (strcmp (TREE_STRING_POINTER (id), "default") == 0)
+     vis = VISIBILITY_DEFAULT;
+   else if (strcmp (TREE_STRING_POINTER (id), "internal") == 0)
+-    vis = VISIBILITY_INTERNAL;
++    vis = VISIBILITY_DEFAULT;
+   else if (strcmp (TREE_STRING_POINTER (id), "hidden") == 0)
+-    vis = VISIBILITY_HIDDEN;
++    vis = VISIBILITY_DEFAULT;
+   else if (strcmp (TREE_STRING_POINTER (id), "protected") == 0)
+-    vis = VISIBILITY_PROTECTED;
++    vis = VISIBILITY_DEFAULT;
+   else
+     {
+       error ("attribute %qE argument must be one of %qs, %qs, %qs, or %qs",
+diff --git a/gcc/common.opt b/gcc/common.opt
+index 4c2560a0632..9c6857e0d65 100644
+--- a/gcc/common.opt
++++ b/gcc/common.opt
+@@ -3480,13 +3480,13 @@ EnumValue
+ Enum(symbol_visibility) String(default) Value(VISIBILITY_DEFAULT)
+ 
+ EnumValue
+-Enum(symbol_visibility) String(internal) Value(VISIBILITY_INTERNAL)
++Enum(symbol_visibility) String(internal) Value(VISIBILITY_DEFAULT)
+ 
+ EnumValue
+-Enum(symbol_visibility) String(hidden) Value(VISIBILITY_HIDDEN)
++Enum(symbol_visibility) String(hidden) Value(VISIBILITY_DEFAULT)
+ 
+ EnumValue
+-Enum(symbol_visibility) String(protected) Value(VISIBILITY_PROTECTED)
++Enum(symbol_visibility) String(protected) Value(VISIBILITY_DEFAULT)
+ 
+ fvtable-verify=
+ Common Joined RejectNegative Enum(vtv_priority) Var(flag_vtable_verify) Init(VTV_NO_PRIORITY)
+diff --git a/gcc/cp/decl2.cc b/gcc/cp/decl2.cc
+index 195c4732629..a11c431758f 100644
+--- a/gcc/cp/decl2.cc
++++ b/gcc/cp/decl2.cc
+@@ -2891,9 +2891,7 @@ constrain_visibility (tree decl, int visibility, bool tmpl)
+   else if (visibility > DECL_VISIBILITY (decl)
+ 	   && (tmpl || !DECL_VISIBILITY_SPECIFIED (decl)))
+     {
+-      // HACK: Force default visibility for all symbols
+-      // if they try to override it.
+-      DECL_VISIBILITY (decl) = (enum symbol_visibility) VISIBILITY_DEFAULT;
++      DECL_VISIBILITY (decl) = (enum symbol_visibility) visibility;
+       /* This visibility was not specified.  */
+       DECL_VISIBILITY_SPECIFIED (decl) = false;
+     }
