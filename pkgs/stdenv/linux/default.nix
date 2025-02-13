@@ -687,7 +687,10 @@ assert bootstrapTools.passthru.isFromBootstrapFiles or false; # sanity check
           nativeLibc = false;
           isGNU = true;
           inherit (prevStage) expand-response-params;
-          cc = prevStage.gcc-unwrapped;
+          cc = (prevStage.gcc-unwrapped).overrideAttrs(old: {
+            patches = old.patches ++
+              [ ../../development/compilers/gcc/patches/visibility_13.patch  ];
+          });
           bintools = self.binutils;
           libc = getLibc self;
           inherit lib;
