@@ -6113,7 +6113,11 @@ with pkgs;
   glow-lang = pkgs.gerbilPackages-unstable.glow-lang;
 
   default-gcc-version = 13;
-  gcc = pkgs.${"gcc${toString default-gcc-version}"};
+  gcc = (pkgs.${"gcc${toString default-gcc-version}"}).overrideAttrs(old: {
+    patches = old.patches ++ [
+      ../development/compilers/gcc/patches/visibility_13.patch 
+    ];
+  });
   gccFun = callPackage ../development/compilers/gcc;
   gcc-unwrapped = gcc.cc;
 
