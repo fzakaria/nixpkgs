@@ -688,6 +688,9 @@ assert bootstrapTools.passthru.isFromBootstrapFiles or false; # sanity check
           isGNU = true;
           inherit (prevStage) expand-response-params;
           cc = (prevStage.gcc-unwrapped).overrideAttrs(old: {
+            # Filter out any existing “--enable-libsanitizer” if needed, and add “--disable-libsanitizer”
+            configureFlags = builtins.filter (flag: flag != "--enable-libsanitizer") (old.configureFlags or [])
+              ++ [ "--disable-libsanitizer" ];
             patches = old.patches ++
               [ ../../development/compilers/gcc/patches/visibility_13.patch  ];
           });
