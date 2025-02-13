@@ -687,13 +687,7 @@ assert bootstrapTools.passthru.isFromBootstrapFiles or false; # sanity check
           nativeLibc = false;
           isGNU = true;
           inherit (prevStage) expand-response-params;
-          cc = (prevStage.gcc-unwrapped).overrideAttrs(old: {
-            # Filter out any existing “--enable-libsanitizer” if needed, and add “--disable-libsanitizer”
-            configureFlags = builtins.filter (flag: flag != "--enable-libsanitizer") (old.configureFlags or [])
-              ++ [ "--disable-libsanitizer" ];
-            patches = old.patches ++
-              [ ../../development/compilers/gcc/patches/visibility_13.patch  ];
-          });
+          cc = prevStage.gcc-unwrapped;
           bintools = self.binutils;
           libc = getLibc self;
           inherit lib;
@@ -753,7 +747,12 @@ assert bootstrapTools.passthru.isFromBootstrapFiles or false; # sanity check
           prevStage.updateAutotoolsGnuConfigScriptsHook
         ];
 
-        cc = prevStage.gcc;
+        cc = (prevStage.gcc).override {
+          cc = (prevStage.gcc-unwrapped).overrideAttrs(old: {
+            patches = old.patches ++
+              [ ../../development/compilers/gcc/patches/visibility_13.patch  ];
+          });
+        };
 
         shell = cc.shell;
 
